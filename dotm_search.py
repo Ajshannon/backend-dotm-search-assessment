@@ -10,13 +10,14 @@ import os
 import sys
 import glob
 import zipfile
+import argparse
 
-cwd = os.getcwd() + '/dotm_files'
 
-def run(text, path=cwd):
+
+def run(text, path):
     files_searched = 0
     matches = 0
-    os.chdir('./dotm_files')
+    os.chdir(path)
     files = glob.glob('*.dotm')
     for filename in files:
         files_searched += 1
@@ -29,14 +30,23 @@ def run(text, path=cwd):
             output_text = 'Match found in file ' + filename + '\n' + '\t' + texts[index - 40: index + 40]
             print output_text
     print "files searched: " + str(files_searched)
-    print "\n Files matched: " + str(matches)
+    print "Files matched: " + str(matches)
 
-run("$", cwd)
-# if __name__ == "__main__"
-#     with open("./input2.txt", "r") as f:
-#         lines = f.read().split("\n")
-#         for line in lines:
-#             print nested_brackets(line)
 
-# if __name__ == "__main__":
-#     main()
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('text', help='choose text to seach for')
+    parser.add_argument('--dir', help='add a directory, default is cwd')
+    args = parser.parse_args()
+
+    text = args.text
+    directory = args.dir
+    if directory:
+        run(text, directory)
+    else: 
+        run(text, )
+    
+
+if __name__ == "__main__":
+    main()
